@@ -37,9 +37,7 @@ export function Todo({ todoText='Hello! Am todo! REAL ONE!', isDone, id, complit
     setIsEditing(prev => {
       console.log(prev);
       
-      if (prev === true) {
-        console.log("from Checkbox if true!");
-        
+      if (prev) {
         editTodo(id, value)
         
         return !prev

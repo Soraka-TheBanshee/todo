@@ -12,6 +12,8 @@ interface ButtonProps {
 
 
 export function Button({ btnName='Button', btnType="button", id, value, clickHendler }: ButtonProps) {
+
+  
   
   return (
     <button 
