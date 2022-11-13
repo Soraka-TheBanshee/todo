@@ -8,7 +8,7 @@ interface IFormProps{
     createTodo(todo:ITodo ):void
 }
 
-export function Form(
+export function InputForm(
     { placeholder='Create new todo...', id, createTodo }: IFormProps
     ) {
         
