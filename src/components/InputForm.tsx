@@ -13,12 +13,12 @@ export function Form(
     ) {
         
         
-        const [inputValue, setInputValue] = useState('')
+        const [inputValuee, setInputValue] = useState('')
 
         const submitHandler = (event: React.FormEvent) => {
             event.preventDefault()
-            if (inputValue.trim().length > 0) {
-                const newTodo:ITodo = {id: id , text:inputValue, isDone: false}
+            if (inputValuee.trim().length > 0) {
+                const newTodo:ITodo = {id: id , text:inputValuee, isDone: false}
     
                 createTodo(newTodo)
                 setInputValue('')
@@ -37,7 +37,7 @@ export function Form(
         type="text"
         name='text'
         placeholder={placeholder}
-        value={inputValue}
+        value={inputValuee}
         onChange={e => setInputValue(e.target.value)}
         />
 
