@@ -22,7 +22,7 @@ export function Todo({ todoText='Hello! Am todo! REAL ONE!', isDone, id, complit
 
   useEffect(() => setValue(todoText),[])
    
-  const editTodoBtn = (value:ITodo['text']) => {
+  const editTodoBtn = () => {
     setIsEditing(prev => {
       if (prev) {
         editTodo(id, value)
@@ -30,6 +30,10 @@ export function Todo({ todoText='Hello! Am todo! REAL ONE!', isDone, id, complit
       }
       return !prev
     })
+  }
+
+  const deleteTodoBtn = () => {
+    deleteTodo(id)
   }
   
   const compliteTodoCheckbox = (id:ITodo["id"]) => {
@@ -71,8 +75,8 @@ export function Todo({ todoText='Hello! Am todo! REAL ONE!', isDone, id, complit
       
       
       <div className='-ml-2 mt-2 lg:flex-none lg:ml-0 lg:mt-0'>
-        <Button btnName={renameBtn} clickHendler={!isDone?editTodoBtn:undefined} id={id} value={value} />
-        <Button btnName='Delete' clickHendler={deleteTodo} id={id} />
+        <Button btnName={renameBtn} clickHendler={!isDone?editTodoBtn:undefined} />
+        <Button btnName='Delete' clickHendler={deleteTodoBtn}/>
       </div>
     </div>
   );

@@ -1,19 +1,33 @@
 import React from 'react';
 import { ITodo } from '../App';
+import { addTodo } from '../store/todosSlice';
+import { useTodosDispatch, useTodosSelector } from './hooks/hooks';
 
 interface ButtonProps {
   btnName: string
   value?: string
   btnType?: "button" | "reset" | "submit" | undefined
-  clickHendler?(id:ITodo["id"]):void
+  clickHendler?():void
   id?:ITodo["id"]
 }
 
 
 
-export function Button({ btnName='Button', btnType="button", id, value, clickHendler }: ButtonProps) {
+export function Button({ btnName='Button', btnType="button", clickHendler }: ButtonProps) {
 
-  
+  const todos = useTodosSelector(state => state.todos.todos)
+  const dispatch = useTodosDispatch();
+
+
+  const testClickHendler = () => {
+    console.log(todos);
+    dispatch(addTodo(btnName))
+
+    if (clickHendler !== undefined) {
+      clickHendler()
+    }
+    // clickHendler()
+  }
   
   return (
     <button 
@@ -30,16 +44,7 @@ export function Button({ btnName='Button', btnType="button", id, value, clickHen
         text-white 
         ${btnName === 'Confirm'?'bg-gray-500 text-red-50':'bg-gray-400'}` }
         type={btnType}
-        onClick={()=>{
-          if (clickHendler !== undefined && id !== undefined) {
-            if (btnName === 'Delete') {
-              clickHendler(id)
-            }
-            else if (value !== undefined) {
-              clickHendler(value)
-            }
-          }
-        }}
+        onClick={testClickHendler}
         >{btnName}
 
         </button>

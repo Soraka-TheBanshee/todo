@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { ITodo } from '../App';
-import { Button } from './Button';
+import { ITodo } from '../../App';
+import { Button } from '../Button';
 
 interface IFormProps{
     placeholder?: string
@@ -8,7 +8,7 @@ interface IFormProps{
     createTodo(todo:ITodo ):void
 }
 
-export function InputForm(
+export function CreateTodoForm(
     { placeholder='Create new todo...', id, createTodo }: IFormProps
     ) {
         
@@ -41,7 +41,7 @@ export function InputForm(
         onChange={e => setInputValue(e.target.value)}
         />
 
-        <Button btnName='Create' btnType='submit' />
+        <Button btnName='Create' btnType='submit'/>
     </form>
   );
 }

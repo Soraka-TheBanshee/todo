@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CreateTodo } from './components/CreateTodo';
-import { InputForm } from './components/InputForm';
+import { CreateTodoForm } from './components/forms/CreateTodoForm';
 import { Todo } from './components/Todo';
 import { TodosField } from './components/TodosField';
 
@@ -80,7 +80,7 @@ function App() {
   return (
     <>
       <CreateTodo>
-        <InputForm createTodo={addTodo} id={id} />
+        <CreateTodoForm createTodo={addTodo} id={id} />
       </CreateTodo>
       
       <TodosField >
