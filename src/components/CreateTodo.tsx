@@ -7,8 +7,6 @@ interface IShadow {
   boxShadow: string
 }
 
-// const shadow:IShadow = { boxShadow: '0px 2px 20px 10px black' }
-
 export function CreateTodo({ children }: IModalProps) {
   return (
     <>

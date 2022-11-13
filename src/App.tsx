@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CreateTodo } from './components/CreateTodo';
-import { Form } from './components/Form';
+import { Form } from './components/InputForm';
 import { Todo } from './components/Todo';
 import { TodosField } from './components/TodosField';
 
