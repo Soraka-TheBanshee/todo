@@ -17,8 +17,6 @@ export function CreateTodo({ children }: IModalProps) {
         
       <hr className='w-full translate-y-10 border-2 border-dashed' />
       </div>
-
     </>
-    
   );
 }

@@ -2,60 +2,44 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ITodo } from '../App';
 import { Button } from './Button';
 import { Checkbox } from './Checkbox';
-// import { useWindowListner } from './useWindowListener';
-
+import { useTodosSelector, useTodosDispatch } from '../hooks/hooks';
+import { compliteTodoStore, deleteTodoStore, editTodoStore } from '../store/todosSlice';
 interface TodoProps {
-  todoText?: string
+  todoText: string
   isDone: Boolean
   id:ITodo["id"]
-  compliteTodo(id:ITodo['id']):void
-  deleteTodo(id:ITodo['id']):void
-  editTodo(id:ITodo['id'], text:ITodo['text']):void
 }
 
 
-export function Todo({ todoText='Hello! Am todo! REAL ONE!', isDone, id, compliteTodo, deleteTodo, editTodo}: TodoProps,) {
+export function Todo({ todoText, isDone, id}: TodoProps,) {
   const [value, setValue] = useState('')
   const [isEditing, setIsEditing] = useState(false)
   const [renameBtn, setRenameBtn] = useState('Rename')
+  const dispatch = useTodosDispatch();
   
-
   useEffect(() => setValue(todoText),[])
    
   const editTodoBtn = () => {
-    setIsEditing(prev => {
-      if (prev) {
-        editTodo(id, value)
-        
-      }
-      return !prev
-    })
+    dispatch(editTodoStore({id, text:value}))
+    setIsEditing(prev => !prev)
   }
 
   const deleteTodoBtn = () => {
-    deleteTodo(id)
+    dispatch(deleteTodoStore({id}))
   }
   
-  const compliteTodoCheckbox = (id:ITodo["id"]) => {
-    compliteTodo(id)
-    setIsEditing(prev => {
-      console.log(prev);
-      
-      if (prev) {
-        editTodo(id, value)
-        
-        return !prev
-      }
-      else {
-        return prev
-      }
-    })
+  const compliteTodoCheckbox = () => {
+    dispatch(compliteTodoStore({id}))
+
+    isEditing&&dispatch(editTodoStore({id, text:value}))
+    
+    setIsEditing(prev => prev?!prev:prev)
   }
 
   useLayoutEffect(() => {
     if (isEditing) {
-      const input = document.querySelector(`#id-${id}`) as HTMLElement
-      input.focus()
+      const todoInput = document.querySelector(`#id-${id}`) as HTMLElement
+      todoInput.focus()
       setRenameBtn("Confirm")
     } else {
       setRenameBtn("Rename")
@@ -63,8 +47,8 @@ export function Todo({ todoText='Hello! Am todo! REAL ONE!', isDone, id, complit
   }, [isEditing])
 
   return (
-    <div className="lg:flex mb-2 shadow-inner py-2 relative">
-      <Checkbox isDone={isDone} id={id} compliteTodo={compliteTodoCheckbox}/>
+    <label className="lg:flex mb-2 shadow-inner py-2 relative">
+      <Checkbox isDone={isDone} compliteTodo={compliteTodoCheckbox}/>
       <input 
       className={`${isDone&&'bg-gray-200'} w-full h-[56px] overflow-scroll px-4 border`}
       id={`id-${id}`} 
@@ -75,9 +59,9 @@ export function Todo({ todoText='Hello! Am todo! REAL ONE!', isDone, id, complit
       
       
       <div className='-ml-2 mt-2 lg:flex-none lg:ml-0 lg:mt-0'>
-        <Button btnName={renameBtn} clickHendler={!isDone?editTodoBtn:undefined} />
-        <Button btnName='Delete' clickHendler={deleteTodoBtn}/>
+        <Button btnName={renameBtn} clickHandler={!isDone?editTodoBtn:undefined} />
+        <Button btnName='Delete' clickHandler={deleteTodoBtn}/>
       </div>
-    </div>
+    </label>
   );
 }

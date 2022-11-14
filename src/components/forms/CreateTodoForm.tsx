@@ -1,33 +1,27 @@
 import React, { useState } from 'react';
-import { ITodo } from '../../App';
 import { Button } from '../Button';
 
 interface IFormProps{
     placeholder?: string
-    id: string
-    createTodo(todo:ITodo ):void
+    addTodo(value:string):void
 }
 
-export function CreateTodoForm(
-    { placeholder='Create new todo...', id, createTodo }: IFormProps
-    ) {
-        
-        
-        const [inputValuee, setInputValue] = useState('')
+const PLACEHOLDER = 'Create new todo...'
 
-        const submitHandler = (event: React.FormEvent) => {
-            event.preventDefault()
-            if (inputValuee.trim().length > 0) {
-                const newTodo:ITodo = {id: id , text:inputValuee, isDone: false}
-    
-                createTodo(newTodo)
-                setInputValue('')
-            }
-            else {
-                window.alert("CMON! U cant be that lazzy")
-            }
-            
+export function CreateTodoForm({ placeholder = PLACEHOLDER, addTodo }: IFormProps) {
+    const [inputValuee, setInputValue] = useState('')
+
+    const submitHandler = (event: React.FormEvent) => {
+        event.preventDefault()
+        if (inputValuee.trim().length > 0) {
+            addTodo(inputValuee)
+            setInputValue('')
         }
+        else {
+            window.alert("CMON! U cant be that lazzy")
+        }
+        
+    }
         
 
   return (

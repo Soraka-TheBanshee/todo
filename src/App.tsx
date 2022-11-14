@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Button } from './components/Button';
 import { CreateTodo } from './components/CreateTodo';
 import { CreateTodoForm } from './components/forms/CreateTodoForm';
 import { Todo } from './components/Todo';
 import { TodosField } from './components/TodosField';
+import { useTodosDispatch, useTodosSelector } from './hooks/hooks';
+import store from './store';
+import { addTodoStore } from './store/todosSlice';
 
 export interface ITodo {
   id: string
@@ -11,76 +15,22 @@ export interface ITodo {
 }
 
 function App() {
-  
-  const [indexes, setIndexes] = useState([0])
-  const id = indexes[0].toString()
-  const [todosList, setTodosList] = useState<ITodo[]>([]);
-  
-  
-  useEffect(() => {
-    const todosString = localStorage.getItem('todos')
-    
-    if (todosString !== null) {
-      const todos = JSON.parse(todosString) as ITodo[]
-      setTodosList(todos) 
-      
-    }
+  const todosList = useTodosSelector(state => state.todos.todos)
+  const dispatch = useTodosDispatch()
 
-    const indexesString = localStorage.getItem('indexes');
-    if (indexesString !== null) {
-      const indexes = JSON.parse(indexesString) as number[]
-      setIndexes(indexes)
-    }
-    
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todosList))
-    localStorage.setItem('indexes', JSON.stringify(indexes))
-  }, [todosList])
-  
-  
-  const addTodo = (todo:ITodo) => {
-    setTodosList((prev) => [...prev, todo])
-    setIndexes(prev => {
-      let newIds = [...prev]
-      
-      if (newIds.length > 1) {
-        newIds.shift()
-      }
-      else {
-        newIds = [newIds[0] + 1]
-      }
-
-      return newIds
-    })
+  const addTodo = (value:string) => {
+    dispatch(addTodoStore({value}))
   }
 
-  const deleteTodo = (id:ITodo["id"]):void => {
-    console.log(id);
+  const checkFunc = () => {
+    console.log(store.getState().todos.todos);
     
-    setTodosList(prev => prev.filter(e => e.id !== id))
-    setIndexes(prev => {
-      let newIds = [...prev]
-      
-      newIds.unshift(Number(id))
-
-      return newIds
-    })
-  }
-
-  const editTodo = (id:ITodo["id"], text:ITodo['text']):void => {
-    setTodosList(prev => prev.map(e => e.id === id?{...e, text: text}:e)) 
-  }
-
-  const compliteTodo = (id:ITodo["id"]):void => {
-    setTodosList(prev => prev.map((e) => e.id === id?{...e, isDone: !e.isDone}:e))
   }
 
   return (
     <>
       <CreateTodo>
-        <CreateTodoForm createTodo={addTodo} id={id} />
+        <CreateTodoForm addTodo={addTodo} />
       </CreateTodo>
       
       <TodosField >
@@ -91,12 +41,10 @@ function App() {
           isDone={todo.isDone} 
           id={todo.id} 
           key={todo.id} 
-          compliteTodo={compliteTodo} 
-          deleteTodo={deleteTodo} 
-          editTodo={editTodo}
           />
         )}
 
+      <Button btnName='CheckStore' clickHandler={checkFunc} />
       </TodosField >
     </>
   );
