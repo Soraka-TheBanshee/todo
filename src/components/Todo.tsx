@@ -4,6 +4,7 @@ import { Button } from './Button';
 import { Checkbox } from './Checkbox';
 import { useTodosSelector, useTodosDispatch } from '../hooks/hooks';
 import { compliteTodoStore, deleteTodoStore, editTodoStore } from '../store/todosSlice';
+import { deleteTodoS } from '../serverAPI';
 interface TodoProps {
   todoText: string
   isDone: Boolean
@@ -26,6 +27,7 @@ export function Todo({ todoText, isDone, id}: TodoProps,) {
 
   const deleteTodoBtn = () => {
     dispatch(deleteTodoStore({id}))
+    // deleteTodoS(Number(id))
   }
   
   const compliteTodoCheckbox = () => {
@@ -47,7 +49,7 @@ export function Todo({ todoText, isDone, id}: TodoProps,) {
   }, [isEditing])
 
   return (
-    <label className="lg:flex mb-2 shadow-inner py-2 relative">
+    <div className="lg:flex shadow-inner py-2 relative">
       <Checkbox isDone={isDone} compliteTodo={compliteTodoCheckbox}/>
       <input 
       className={`${isDone&&'bg-gray-200'} w-full h-[56px] overflow-scroll px-4 border`}
@@ -62,6 +64,6 @@ export function Todo({ todoText, isDone, id}: TodoProps,) {
         <Button btnName={renameBtn} clickHandler={!isDone?editTodoBtn:undefined} />
         <Button btnName='Delete' clickHandler={deleteTodoBtn}/>
       </div>
-    </label>
+    </div>
   );
 }

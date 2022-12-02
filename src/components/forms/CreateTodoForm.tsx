@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { text } from 'stream/consumers';
+import { createTodoS, sendTesto } from '../../serverAPI';
 import { Button } from '../Button';
 
 interface IFormProps{
@@ -13,6 +15,7 @@ export function CreateTodoForm({ placeholder = PLACEHOLDER, addTodo }: IFormProp
 
     const submitHandler = (event: React.FormEvent) => {
         event.preventDefault()
+
         if (inputValuee.trim().length > 0) {
             addTodo(inputValuee)
             setInputValue('')

@@ -1,5 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ITodo } from "../App";
+import { compliteTodoS, createTodoS, deleteTodoS, editeTodoS, getTodosS } from "../serverAPI";
+
+// === interfaces starts ===============================================
 interface IActionCreate {
     payload: {value: string}
     type: string
@@ -23,8 +26,44 @@ interface IActionComplite {
     type: string
 }
 
+// === interfaces ends ===============================================
+
+
 const initState:ITodo[] = []
 const idsStack = [0]
+
+
+const socketStore = new WebSocket('ws://localhost:5000');
+socketStore.onopen = () => {
+    console.log("Socket connected");
+    
+    getTodosS(socketStore)
+}
+
+export const handleMessage = (store:any) => (next:any) => (action:any) => {
+    switch (action.type) {
+        case 'todos/initTodosStore':
+            console.log('middlewear(todos/initTodosStore) is working');
+
+            socketStore.onmessage = ({data}) => {
+                const parsedData = JSON.parse(data)
+                action.payload = parsedData
+
+                console.log('message from server recived');
+                
+                return next(action)
+            }
+
+            break;
+
+        default:
+            break;
+    }
+
+    next(action)    
+}
+
+
 
 const todosSlice = createSlice({
     name: 'todos',
@@ -32,54 +71,36 @@ const todosSlice = createSlice({
         todos:  initState
     },
     reducers: {
+        initTodosStore(state, action) {            
+            state.todos = action.payload
+        },
+
         addTodoStore(state, action:IActionCreate) {         
-            state.todos.push({
-                id: idsStack[0].toString(),
-                text: action.payload.value,
-                isDone: false
-            })
-
-            if (idsStack.length === 1) {
-                idsStack[0] += 1
-                console.log('Lengh = 1');
-                
-            } 
-            else if (idsStack.length > 1) {
-                idsStack.shift()
-                console.log('Lengh > 1');
-                
-            } 
-            else {
-                throw new Error("Something is wrong with ids generator");
-            }
+            createTodoS(socketStore, action.payload.value)
         },
+
         deleteTodoStore(state, action:IActionDelete) {
-            const id = action.payload.id
+            const id = Number(action.payload.id)
 
-            state.todos = state.todos.filter(e => e.id !== id)
-            
-            if (!isNaN(Number(id))) {
-                idsStack.unshift(Number(id));
-            }
-            else {
-                throw new Error("Number( id ) has returned NaN");
-            }
+            deleteTodoS(socketStore, id)
         },
+
         editTodoStore(state, action:iActionEdit) {
-            const id = action.payload.id
+            const id = Number(action.payload.id)
             const text = action.payload.text
 
-            state.todos = state.todos.map(e => e.id === id?{...e, text}:e)
+            editeTodoS(socketStore, id, text)
             
         },
-        compliteTodoStore(state, action:IActionComplite) {
-            const id = action.payload.id
 
-            state.todos = state.todos.map(e => e.id === id?{...e, isDone: !e.isDone}:e)
+        compliteTodoStore(state, action:IActionComplite) {
+            const id = Number(action.payload.id)
+
+            compliteTodoS(socketStore, id)
         },
     }
 });
 
-export const { addTodoStore, deleteTodoStore, editTodoStore, compliteTodoStore } = todosSlice.actions;
+export const { addTodoStore, deleteTodoStore, editTodoStore, compliteTodoStore, initTodosStore } = todosSlice.actions;
 
 export default todosSlice.reducer;
