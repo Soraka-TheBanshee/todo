@@ -1,5 +1,3 @@
-import { type } from "os";
-import { render } from "react-dom";
 
 interface IMsg {
     command: 'create' | 'edit' | 'delete' | 'complite' | 'get'

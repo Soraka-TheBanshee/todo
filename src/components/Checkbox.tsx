@@ -1,5 +1,4 @@
 import React from 'react';
-import { ITodo } from '../App';
 interface CheckboxInterface {
   isDone: Boolean
   compliteTodo():void

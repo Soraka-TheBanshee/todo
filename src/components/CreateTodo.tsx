@@ -3,10 +3,6 @@ interface IModalProps {
   children: React.ReactNode
 }
 
-interface IShadow {
-  boxShadow: string
-}
-
 export function CreateTodo({ children }: IModalProps) {
   return (
     <>

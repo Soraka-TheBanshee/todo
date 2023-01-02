@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { text } from 'stream/consumers';
-import { createTodoS, sendTesto } from '../../serverAPI';
 import { Button } from '../Button';
 
 interface IFormProps{

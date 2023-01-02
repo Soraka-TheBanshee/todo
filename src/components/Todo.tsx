@@ -2,9 +2,8 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ITodo } from '../App';
 import { Button } from './Button';
 import { Checkbox } from './Checkbox';
-import { useTodosSelector, useTodosDispatch } from '../hooks/hooks';
+import { useTodosDispatch } from '../hooks/hooks';
 import { compliteTodoStore, deleteTodoStore, editTodoStore } from '../store/todosSlice';
-import { deleteTodoS } from '../serverAPI';
 interface TodoProps {
   todoText: string
   isDone: Boolean
@@ -18,7 +17,10 @@ export function Todo({ todoText, isDone, id}: TodoProps,) {
   const [renameBtn, setRenameBtn] = useState('Rename')
   const dispatch = useTodosDispatch();
   
-  useEffect(() => setValue(todoText),[])
+  useEffect(() => {
+    setValue(todoText)
+    // eslint-disable-next-line
+  },[])
    
   const editTodoBtn = () => {
     dispatch(editTodoStore({id, text:value}))
@@ -41,6 +43,7 @@ export function Todo({ todoText, isDone, id}: TodoProps,) {
   useLayoutEffect(() => {
     if (isEditing) {
       const todoInput = document.querySelector(`#id-${id}`) as HTMLElement
+      // eslint-disable-next-line
       todoInput.focus()
       setRenameBtn("Confirm")
     } else {

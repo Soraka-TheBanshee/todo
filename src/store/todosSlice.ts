@@ -30,8 +30,6 @@ interface IActionComplite {
 
 
 const initState:ITodo[] = []
-const idsStack = [0]
-
 
 const socketStore = new WebSocket('ws://localhost:5000');
 socketStore.onopen = () => {
