@@ -48,7 +48,7 @@ export function Todo({ todoText, isDone, id}: TodoProps,) {
     } else {
       setRenameBtn("Rename")
     }
-    
+    // eslint-disable-next-line
   }, [isEditing])
 
   return (
