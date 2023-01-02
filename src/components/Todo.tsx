@@ -43,12 +43,12 @@ export function Todo({ todoText, isDone, id}: TodoProps,) {
   useLayoutEffect(() => {
     if (isEditing) {
       const todoInput = document.querySelector(`#id-${id}`) as HTMLElement
-      // eslint-disable-next-line
       todoInput.focus()
       setRenameBtn("Confirm")
     } else {
       setRenameBtn("Rename")
     }
+    // eslint-disable-next-line
   }, [isEditing])
 
   return (
