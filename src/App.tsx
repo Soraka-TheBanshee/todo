@@ -21,6 +21,7 @@ function App() {
 
   useEffect(() => {
     dispatch(initTodosStore([]))
+    // eslint-disable-next-line
   }, [])
 
   const addTodo = (value:string) => {
