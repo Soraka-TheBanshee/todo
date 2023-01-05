@@ -51,7 +51,9 @@ function App() {
           />
         )}
 
-      <Button btnName='CheckStore' clickHandler={checkFunc} />
+      <div
+      className='flex justify-end pt-8 lg:block -ml-2'
+      ><Button btnName='CheckStor' clickHandler={checkFunc} /></div>
       </TodosField >
     </>
   );
