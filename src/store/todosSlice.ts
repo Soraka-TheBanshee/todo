@@ -31,7 +31,7 @@ interface IActionComplite {
 
 const initState:ITodo[] = []
 
-const socketStore = new WebSocket('ws://serverwithpgdbfortodos-production.up.railway.app');
+const socketStore = new WebSocket('wss://serverwithpgdbfortodos-production.up.railway.app');
 socketStore.onopen = () => {
     console.log("Socket connected");
     
